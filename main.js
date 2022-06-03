@@ -22,7 +22,7 @@ function setup() {
     canvas = createCanvas(600, 500);
     canvas.center();
 
-    video = createCpature(VIDEO);
+    video = createCapture(VIDEO);
     video.hide();
 
     poseNet = ml5.poseNet(video, modelLoaded);
@@ -42,6 +42,7 @@ function gotPoses(results) {
 
         rightWristX = results[0].pose.rightWrist.x;
         rightWristY = results[0].pose.rightWrist.y;
+        console.log("rightWristX = " + rightWristX + "rightWristY = " + rightWristY);
 
         leftWristX = results[0].pose.leftWrist.x;
         leftWristY = results[0].pose.leftWrist.y;
@@ -58,8 +59,8 @@ function draw() {
     song1_status = song1.isPlaying();
     song2_status = song2.isPlaying();
 
-    if (scoreRightWrist > 0.2) {
-        circle(rightWristX, rightWrsitY, 20);
+    if (ScoreRightWrist > 0.2) {
+        circle(rightWristX, rightWristY, 20);
 
         song2.stop();
 
@@ -68,4 +69,20 @@ function draw() {
             document.getElementById("song").innerHTML = "Playing - Someone I used to know";
         }
     }
+    if (ScoreLeftWrist > 0.2) {
+        circle(leftWristX, leftWristY, 20);
+
+        song1.stop();
+
+        if (song2_status == false) {
+            song2.play();
+            document.getElementById("song").innerHTML = "Playing - Let me down slowly";
+        }
+    }
+}
+
+function play() {
+    song.play();
+    song.setVolume(1);
+    song.rate(1);
 }
